@@ -71,12 +71,20 @@ public class ASTcolumn_type extends SimpleNode {
         } else {
           return "STRUCT <>";
         }
+      case "DOTTED_PATH":
+        return AstTreeUtils.tokensToString(this);
       default:
         throw new IllegalArgumentException("Unknown column type " + typeName);
     }
   }
 
   public String getTypeName() {
+    if (jjtGetNumChildren() == 1) {
+      Object child = children[0];
+      if (child instanceof ASTdotted_path) {
+        return "DOTTED_PATH";
+      }
+    }
     return jjtGetFirstToken().toString().toUpperCase(Locale.ROOT);
   }
 }
